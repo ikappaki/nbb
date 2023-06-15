@@ -2,6 +2,9 @@
 #
 # Check https://circleci.com/docs/2.0/language-clojure/ for more details
 #
+orbs:
+  node: circleci/node@4.0.0
+
 jobs:
   build:
     docker:
@@ -55,8 +58,27 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "deps.edn" }}
 
+  mac-test:
+    macos:
+      xcode: 14.0.0
+    steps:
+      - checkout
+      - node/install:
+          node-version: "14.21.3"
+      - run:
+          name: Install babashka
+          command: |
+            bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install) --dir ~
+            sudo mv ~/bb /usr/local/bin/bb
+      - run:
+          name: Run Node tests
+          command: |
+            node -v
+            bb ci:test
+
 workflows:
   version: 2
   ci:
     jobs:
-      - build
+      # - build
+      - mac-test
