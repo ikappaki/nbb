@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-clojure/ for more details
 #
 orbs:
-  node: circleci/node@4.0.0
+  node: circleci/node@5.0.2
 
 jobs:
   build:
@@ -60,7 +60,7 @@ jobs:
 
   mac-test:
     macos:
-      xcode: 14.0.0
+      xcode: 14.3.1
     steps:
       - checkout
       - node/install:
